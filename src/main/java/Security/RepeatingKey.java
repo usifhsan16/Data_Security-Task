@@ -2,7 +2,6 @@ package Security;
 
 public class RepeatingKey {
     public String analyse(String plainText, String cipherText) {
-        // Students should complete this part
         plainText=plainText.toLowerCase();
         cipherText=cipherText.toLowerCase();
         String key="";

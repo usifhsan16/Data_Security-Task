@@ -2,7 +2,6 @@ package Security;
 
 public class Railfence {
     public int analyse(String plainText, String cipherText) {
-        // Students should complete this part
         plainText=plainText.toLowerCase();
         cipherText=cipherText.toLowerCase();
         for (int key = 2; key <= plainText.length(); key++) {
