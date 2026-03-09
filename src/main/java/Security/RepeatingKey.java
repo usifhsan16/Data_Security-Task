@@ -3,12 +3,56 @@ package Security;
 public class RepeatingKey {
     public String analyse(String plainText, String cipherText) {
         // Students should complete this part
-        return null;
+        plainText=plainText.toLowerCase();
+        cipherText=cipherText.toLowerCase();
+        String key="";
+        int val=0;
+        for (int i = 0; i < plainText.length(); i++) {
+            val=cipherText.charAt(i)-plainText.charAt(i);
+            if(val<0){
+                val+=26;
+            }
+            val%=26;
+            key=key+(char)(val+'a');
+        }
+        String trueKey="";
+        String substring;
+        int counter;
+        for(int i=1;i<key.length();i++){
+            trueKey=key.substring(0,i);
+            substring="";
+            counter=0;
+            while(substring.length()<key.length()){
+                substring+=trueKey.charAt((counter%trueKey.length()));
+                counter++;
+            }
+            if(substring.equals(key)){
+                return trueKey;
+            }
+        }
+        return key;
     }
 
     public String decrypt(String cipherText, String key) {
         // Students should complete this part
-        return null;
+        String plain="";
+        int val=0;
+        int loop=0;
+        key=key.toLowerCase();
+        String realKey=key;
+        cipherText=cipherText.toLowerCase();
+        while (key.length()<cipherText.length()){
+            key=key + realKey.charAt((loop%realKey.length()));
+            loop++;
+        }
+        for (int i = 0; i < cipherText.length(); i++) {
+            val=cipherText.charAt(i)-key.charAt(i);
+            if (val<0){
+                val+=26;
+            }
+            plain+=(char)(val+'a');
+        }
+        return plain;
     }
 
     public String encrypt(String plainText, String key) {
