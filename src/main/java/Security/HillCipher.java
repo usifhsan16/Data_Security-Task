@@ -140,12 +140,57 @@ public class HillCipher {
     }
 
     public List<Integer> decrypt(List<Integer> cipherText, List<Integer> key) {
+        int n = findMatrixSize(key.size());
+        if (n == -1) throw new InvalidAnalysisException();
+
+        
+        List<Integer> keyInverse = invertMatrix(key, n);
+
+        List<Integer> plainText = new ArrayList<>();
+
+        for (int i = 0; i < cipherText.size(); i += n) {
+            for (int row = 0; row < n; row++) {
+                int sum = 0;
+                for (int col = 0; col < n; col++) {
+                    sum += keyInverse.get(row * n + col) * cipherText.get(i + col);
+                }
+                plainText.add(mod26(sum));
+            }}
+         return plainText;
         // Students should complete this part
-        return null;
+        
     }
 
     public List<Integer> analyse3By3Key(List<Integer> plainText, List<Integer> cipherText) {
         // Students should complete this part
-        throw new InvalidAnalysisException();
+        if (plainText.size() < 9 || cipherText.size() < 9)
+            throw new InvalidAnalysisException();
+
+        int n = 3;
+
+        List<Integer> P = new ArrayList<>(plainText.subList(0, 9));
+        List<Integer> C = new ArrayList<>(cipherText.subList(0, 9));
+
+
+        List<Integer> PT = new ArrayList<>();
+        List<Integer> CT = new ArrayList<>();
+
+        for (int i = 0; i < n * n; i++) {
+            PT.add(0);
+            CT.add(0);
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                PT.set(j * n + i, P.get(i * n + j));
+                CT.set(j * n + i, C.get(i * n + j));
+            }
+        }
+
+        List<Integer> Pinv = invertMatrix(PT, n);
+
+        return multiplyMatricesMod26(CT, Pinv, n);
     }
+       // throw new InvalidAnalysisException();
+    
 }
